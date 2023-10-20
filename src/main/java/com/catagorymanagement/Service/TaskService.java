@@ -27,9 +27,8 @@ public class TaskService {
         return repository.findById(id).orElse(null);
     }
 
-    public Task getTaskByDate(Date scheduleDate){
-        return repository.findByDate(scheduleDate);
-
+  public Task getTaskByDate(Date scheduleDate) {
+        return repository.findByScheduleDate(scheduleDate);
     }
     public String deleteTask(int id){
         repository.deleteById(id);
