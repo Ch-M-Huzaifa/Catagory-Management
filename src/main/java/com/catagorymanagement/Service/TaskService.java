@@ -15,8 +15,15 @@ public class TaskService {
     private TaskRepository repository;
 
     public Task saveTask(Task task){
+          Date currentDate= new Date();
+        if (task.getScheduleDate().after(currentDate)) {
+
         return repository.save(task);
     }
+        else {
+            return null;
+        }
+    } 
     public List<Task> saveAllTask(List<Task> tasks){
         return repository.saveAll(tasks);
     }
