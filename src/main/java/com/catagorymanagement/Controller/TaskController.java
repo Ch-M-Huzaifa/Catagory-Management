@@ -32,11 +32,10 @@ public class TaskController {
     public Task getTaskBYId(@PathVariable int id){
         return service.getTaskById(id);
     }
-    @GetMapping("/task{date}")
-    public Task getTaskByDate(@PathVariable Date scheduleDate){
-        return service.getTaskByDate(scheduleDate);
+  @GetMapping("/task/{date}")
+    public Task getTaskByDate(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+        return service.getTaskByDate(date);
     }
-
     @DeleteMapping("delete{id}")
     public String delete(@PathVariable int id){
         return service.deleteTask(id);
