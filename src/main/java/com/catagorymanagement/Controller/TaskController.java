@@ -2,10 +2,11 @@ package com.catagorymanagement.Controller;
 
 import com.catagorymanagement.Entity.Task;
 import com.catagorymanagement.Service.TaskService;
+import org.hibernate.validator.internal.util.privilegedactions.LoadClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -28,22 +29,28 @@ public class TaskController {
         return service.getTasks();
     }
 
-    @GetMapping("/task{id}")
-    public Task getTaskBYId(@PathVariable int id){
+    @GetMapping("/taskById/{id}")
+    public Task getTaskBYId(@PathVariable("id") int id){
         return service.getTaskById(id);
     }
-  @GetMapping("/task/{date}")
-    public Task getTaskByDate(@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
-        return service.getTaskByDate(date);
+    @GetMapping("/taskByDate/{scheduleDate}")
+    public List<Task> getTaskByD(@PathVariable("scheduleDate") LocalDate scheduleDate){
+        return service.getTaskByDate(scheduleDate);
     }
-    @DeleteMapping("delete{id}")
+
+    @DeleteMapping("/delete/{id}")
     public String delete(@PathVariable int id){
         return service.deleteTask(id);
     }
 
-    @PostMapping("/update")
-    public Task updateTask(@RequestBody Task id){
-        return service.updateTask(id);
+    @PutMapping("/update/{id}")
+    public Task updateTask(@PathVariable int id,@RequestBody Task task){
+        return service.updateTask(id,task);
+    }
+
+    @PatchMapping("/updateD/{id}")
+    public Task updateTaskByDate(@PathVariable int id,@RequestBody Task scheduleDate){
+        return service.updateTaskDate(id,scheduleDate);
     }
 
 

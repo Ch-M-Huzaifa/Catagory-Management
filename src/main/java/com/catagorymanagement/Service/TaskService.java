@@ -2,12 +2,17 @@ package com.catagorymanagement.Service;
 
 import com.catagorymanagement.Entity.Task;
 import com.catagorymanagement.Repository.TaskRepository;
+import com.catagorymanagement.exception.ResourceNotFoundException;
+import org.hibernate.grammars.hql.HqlParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+
+
 
 @Service
 public class TaskService {
@@ -15,8 +20,8 @@ public class TaskService {
     private TaskRepository repository;
 
     public Task saveTask(Task task){
-          Date currentDate= new Date();
-        if (task.getScheduleDate().after(currentDate)) {
+          LocalDate currentDate= LocalDate.now();
+        if (task.getScheduleDate().isAfter(currentDate)) {
 
         return repository.save(task);
     }
@@ -31,10 +36,10 @@ public class TaskService {
         return repository.findAll();
     }
     public Task getTaskById(int id){
-        return repository.findById(id).orElse(null);
+        return repository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Not found this id:"+ id));
     }
 
-  public Task getTaskByDate(Date scheduleDate) {
+  public List<Task> getTaskByDate(LocalDate scheduleDate) {
         return repository.findByScheduleDate(scheduleDate);
     }
     public String deleteTask(int id){
@@ -42,16 +47,24 @@ public class TaskService {
         return "Task deleted";
     }
 
-    public Task updateTask(Task task) {
-        Task existingTask=repository.findById(task.getId()).orElse(null);
+    public Task updateTask(int id ,Task task) {
+        Task existingTask=repository.findById(id).get();
 
         existingTask.setTitle(task.getTitle());
         existingTask.setDescription(task.getDescription());
          existingTask.setScheduleDate(task.getScheduleDate());
         existingTask.setCompleted(task.isCompleted());
         return repository.save(existingTask);
-
-
     }
+    public Task updateTaskDate(int id,Task scheduleDate) {
+        Task existingTask = repository.findById(id).get();
 
+        LocalDate currentDate = LocalDate.now();
+
+        if (scheduleDate.getScheduleDate().isAfter(currentDate)) {
+            existingTask.setScheduleDate(scheduleDate.getScheduleDate());
+            return repository.save(existingTask);
+        }
+        return null;
+    }
 }

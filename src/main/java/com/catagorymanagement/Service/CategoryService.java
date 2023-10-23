@@ -3,6 +3,8 @@ package com.catagorymanagement.Service;
 import com.catagorymanagement.Entity.Category;
 import com.catagorymanagement.Entity.Task;
 import com.catagorymanagement.Repository.CategoryRepository;
+import com.catagorymanagement.Repository.TaskRepository;
+import com.catagorymanagement.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,8 @@ import java.util.List;
 public class CategoryService {
     @Autowired
     private CategoryRepository repository;
+    @Autowired
+    private TaskRepository taskRepository;
 
     public Category saveCategory(Category category){
         return repository.save(category);
@@ -23,7 +27,7 @@ public class CategoryService {
         return repository.findAll();
     }
     public Category getCatById(int id){
-        return repository.findById(id).orElse(null);
+        return repository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Not found this id:"+ id));
     }
 
     public String deleteCategory(int id){
@@ -32,9 +36,8 @@ public class CategoryService {
     }
 
 
-    public Category updateCategory(Category category) {
-        Category existingCategory=repository.findById(category.getId()).orElse(null);
-
+    public Category updateCategory(int id,Category category) {
+        Category existingCategory=repository.findById(id).get();
         existingCategory.setName(category.getName());
         return repository.save(existingCategory);
 
