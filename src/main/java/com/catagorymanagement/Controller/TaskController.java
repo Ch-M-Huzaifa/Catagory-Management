@@ -38,6 +38,11 @@ public class TaskController {
         return service.getTaskByDate(scheduleDate);
     }
 
+      @GetMapping("/taskByP/{priority}")
+    public List<Task> getTaskByP(@PathVariable("priority") String priority){
+        return service.getTaskPriority(priority);
+    }
+
     @DeleteMapping("/delete/{id}")
     public String delete(@PathVariable int id){
         return service.deleteTask(id);
