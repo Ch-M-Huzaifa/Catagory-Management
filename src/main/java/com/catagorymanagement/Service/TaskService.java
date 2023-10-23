@@ -42,6 +42,9 @@ public class TaskService {
   public List<Task> getTaskByDate(LocalDate scheduleDate) {
         return repository.findByScheduleDate(scheduleDate);
     }
+     public List<Task> getTaskPriority(String priority){
+        return repository.findByPriority(priority);
+    }
     public String deleteTask(int id){
         repository.deleteById(id);
         return "Task deleted";
