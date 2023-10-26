@@ -14,8 +14,6 @@ import java.util.List;
 public class CategoryController {
     @Autowired
     private CategoryService service;
-    @Autowired
-    private TaskService taskService;
 
     @PostMapping("/registerCat")
     public Category registerCategory(@Valid @RequestBody Category category){
