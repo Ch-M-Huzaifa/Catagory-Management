@@ -14,8 +14,7 @@ import java.util.List;
 public class CategoryService {
     @Autowired
     private CategoryRepository repository;
-    @Autowired
-    private TaskRepository taskRepository;
+
 
     public Category saveCategory(Category category){
         return repository.save(category);
