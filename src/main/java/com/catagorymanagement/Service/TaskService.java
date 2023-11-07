@@ -40,7 +40,6 @@ public class TaskService {
 
         existingTask.setTitle(task.getTitle());
         existingTask.setDescription(task.getDescription());
-//         existingTask.setScheduleDate(task.getScheduleDate());
         existingTask.setCompleted(task.isCompleted());
         return repository.save(existingTask);
     }
